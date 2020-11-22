@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/cube-timer/static/css/main.b2900c7a.chunk.css",
-    "main.js": "/cube-timer/static/js/main.8803c3a7.chunk.js",
-    "main.js.map": "/cube-timer/static/js/main.8803c3a7.chunk.js.map",
+    "main.css": "/cube-timer/static/css/main.1009247e.chunk.css",
+    "main.js": "/cube-timer/static/js/main.a085dcc9.chunk.js",
+    "main.js.map": "/cube-timer/static/js/main.a085dcc9.chunk.js.map",
     "runtime-main.js": "/cube-timer/static/js/runtime-main.20b6db5f.js",
     "runtime-main.js.map": "/cube-timer/static/js/runtime-main.20b6db5f.js.map",
-    "static/js/2.86534426.chunk.js": "/cube-timer/static/js/2.86534426.chunk.js",
-    "static/js/2.86534426.chunk.js.map": "/cube-timer/static/js/2.86534426.chunk.js.map",
+    "static/js/2.6d5daada.chunk.js": "/cube-timer/static/js/2.6d5daada.chunk.js",
+    "static/js/2.6d5daada.chunk.js.map": "/cube-timer/static/js/2.6d5daada.chunk.js.map",
     "index.html": "/cube-timer/index.html",
-    "static/css/main.b2900c7a.chunk.css.map": "/cube-timer/static/css/main.b2900c7a.chunk.css.map",
-    "static/js/2.86534426.chunk.js.LICENSE.txt": "/cube-timer/static/js/2.86534426.chunk.js.LICENSE.txt"
+    "static/css/main.1009247e.chunk.css.map": "/cube-timer/static/css/main.1009247e.chunk.css.map",
+    "static/js/2.6d5daada.chunk.js.LICENSE.txt": "/cube-timer/static/js/2.6d5daada.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.20b6db5f.js",
-    "static/js/2.86534426.chunk.js",
-    "static/css/main.b2900c7a.chunk.css",
-    "static/js/main.8803c3a7.chunk.js"
+    "static/js/2.6d5daada.chunk.js",
+    "static/css/main.1009247e.chunk.css",
+    "static/js/main.a085dcc9.chunk.js"
   ]
 }
