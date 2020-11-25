@@ -12,7 +12,7 @@ Features:
 
 Even though the software is Arduino-based, it is not very portable, as it makes use of some cool features of the ESP32 (e.g. capacitive sensor inputs, interrupts on all GPIO pins, Bluetooth radio). It might work with slight modifications on ESP8266, but it will definitely not work on AVR-based Arduino boards.
 
-### [Check out the demo!](https://youtu.be/G7zfDGPaEZs)
+### [Check out the demo](https://youtu.be/G7zfDGPaEZs) and [the blog post](https://ojdip.net/2020/11/esp32-cube-timer/)!
 
 ## Build and pin-out
 
