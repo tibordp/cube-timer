@@ -32,7 +32,7 @@ jobs:
         run: pio run
   build-demoapp:
     env:
-      working-directory: ./demo-app
+      working-directory: ./demo_app
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
