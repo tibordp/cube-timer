@@ -31,8 +31,9 @@ jobs:
       - name: Run PlatformIO
         run: pio run
   build-demoapp:
-    env:
-      working-directory: ./demo_app
+    defaults:
+      run:
+        working-directory: scripts
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
