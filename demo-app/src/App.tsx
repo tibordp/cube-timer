@@ -36,19 +36,19 @@ function FakeRunTime() {
   const rafRef = React.useRef<number>();
   const previousTimeRef = React.useRef<number>();
 
-  const animate = (time: number) => {
+  const animate = React.useCallback((time: number) => {
     if (previousTimeRef.current !== undefined) {
       const deltaTime = time - previousTimeRef.current;
       setCount((prevCount) => prevCount + deltaTime);
     }
     previousTimeRef.current = time;
     rafRef.current = requestAnimationFrame(animate);
-  };
+  }, []);
 
   React.useEffect(() => {
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current!);
-  }, []);
+  }, [animate]);
 
   return <span className="running">{formatDuration(count)}</span>;
 }
@@ -75,8 +75,10 @@ function CubeDisplay({ timerState }: CubeDisplayProps) {
 
 function App() {
   const { connect, disconnect, connectionState, timerState } = useBluetooth();
-  const [{ orderedHistory, best, avg5, avg12 }, dispatch] = useHistory(timerState);
-  
+  const [{ orderedHistory, best, avg5, avg12 }, dispatch] = useHistory(
+    timerState
+  );
+
   useWakeLock(
     connectionState === ConnectionState.CONNECTED ||
       connectionState === ConnectionState.CONNECTING

@@ -29,9 +29,10 @@
 #define STATE_ADJUST_INSPECTION 40
 #define STATE_TOGGLE_INSPECTION_1 50
 #define STATE_TOGGLE_INSPECTION_2 51
-#define STATE_CALIBRATE_1 997
-#define STATE_CALIBRATE_2 998
-#define STATE_CALIBRATE_3 999
+#define STATE_CALIBRATE_1 61
+#define STATE_CALIBRATE_2 62
+#define STATE_CALIBRATE_3 63
+#define STATE_SLEEP 999
 
 #define SOLVE_STATE_NONE 0
 #define SOLVE_STATE_SOLVED 1
@@ -50,6 +51,8 @@
 
 #define SERVICE_UUID         "EB0E77C3-AF14-4B7F-AC80-D3631DC386AC"
 #define CHARACTERISTIC_UUID  "EB0E77C3-AF14-4B7F-AC80-D3631DC386AD"
+
+#define SLEEP_TIMEOUT 180000
 
 
 Preferences preferences;
@@ -78,6 +81,7 @@ volatile bool doInspection = false;
 volatile long inspectionStarted = 0;
 volatile long solvingStarted = 0;
 volatile long solvingFinished = 0;
+volatile long idleStarted = 0;
 
 long potPosition = 0;
 bool potChanged = false;
@@ -199,6 +203,9 @@ void IRAM_ATTR stateMachine(long currentTime) {
 
   switch (state) {
     case STATE_INITIAL:
+      if (currentTime - idleStarted > SLEEP_TIMEOUT) {
+        state = STATE_SLEEP;
+      }
       if (button1Pressed && !plus2DNFButtonPressed && solveState != SOLVE_STATE_NONE) {
         dnfButtonPressedOn = currentTime;
         solveState = solveState == SOLVE_STATE_DNF ? SOLVE_STATE_SOLVED : SOLVE_STATE_DNF;
@@ -286,6 +293,7 @@ void IRAM_ATTR stateMachine(long currentTime) {
     case STATE_SOLVED_1:
       if (!touchDetected) {
         state = STATE_INITIAL;
+        idleStarted = currentTime;
       }
       break;
     case STATE_ADJUST_INSPECTION:
@@ -294,6 +302,7 @@ void IRAM_ATTR stateMachine(long currentTime) {
       }
       if (currentTime - potScreenShown > 1000) {
         state = STATE_INITIAL;
+        idleStarted = currentTime;
       }
       break;
     case STATE_TOGGLE_INSPECTION_1:
@@ -304,6 +313,7 @@ void IRAM_ATTR stateMachine(long currentTime) {
     case STATE_TOGGLE_INSPECTION_2:
       if (currentTime - potScreenShown > 1000) {
         state = STATE_INITIAL;
+        idleStarted = currentTime;
       }
       if (button4Pressed) {
         state = STATE_TOGGLE_INSPECTION_1;
@@ -581,6 +591,8 @@ void setup() {
   attachInterrupt(BUTTON2, onButtonPress, CHANGE);
   attachInterrupt(BUTTON3, onButtonPress, CHANGE);
   attachInterrupt(BUTTON4, onButtonPress, CHANGE);
+
+  esp_sleep_enable_touchpad_wakeup();
 }
 
 /*
@@ -635,6 +647,10 @@ void loop() {
   if (state == STATE_CALIBRATE_3) {
     drawScreen(currentTime);
     applyCalibrationSettings(); 
+  }
+  if (state == STATE_SLEEP) {
+    drawScreen(currentTime);
+    esp_deep_sleep_start();
   }
 
   drawScreen(currentTime);

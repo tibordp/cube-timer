@@ -34,7 +34,7 @@ export function useBluetooth(): UseBluetoothResult {
     duration: 0,
   });
 
-  const connect = async () => {
+  const connect = React.useCallback(async () => {
     setConnectionState(ConnectionState.CONNECTING);
     try {
       const device = await navigator.bluetooth.requestDevice({
@@ -46,13 +46,13 @@ export function useBluetooth(): UseBluetoothResult {
       // the device, so we don't treat this as error.
       setConnectionState(ConnectionState.NOT_CONNECTED);
     }
-  };
+  }, []);
 
-  const connectGatt = async (device: BluetoothDevice) => {
+  const connectGatt = React.useCallback(async () => {
     try {
       setConnectionState(ConnectionState.CONNECTING);
-      await device.gatt?.connect();
-      const service = await device.gatt?.getPrimaryService(CUBE_TIME_UUID);
+      await device!.gatt?.connect();
+      const service = await device!.gatt?.getPrimaryService(CUBE_TIME_UUID);
       const characteristic = await service?.getCharacteristic(
         CHARACTERISTIC_UUID
       );
@@ -73,11 +73,7 @@ export function useBluetooth(): UseBluetoothResult {
       console.error(e);
       setConnectionState(ConnectionState.FAILED);
     }
-  };
-
-  function reconnect(this: BluetoothDevice) {
-    connectGatt(this);
-  }
+  }, [device]);
 
   const disconnect = async () => {
     setDevice(null);
@@ -89,15 +85,16 @@ export function useBluetooth(): UseBluetoothResult {
       return () => {};
     }
 
-    connectGatt(device).then(() =>
-      device.addEventListener("gattserverdisconnected", reconnect)
+    connectGatt().then(() =>
+      device.addEventListener("gattserverdisconnected", connectGatt)
     );
 
     return () => {
-      device.removeEventListener("gattserverdisconnected", reconnect);
+      device.removeEventListener("gattserverdisconnected", connectGatt);
       device.gatt?.disconnect();
     };
-  }, [device]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectGatt]);
 
   return {
     connect,
