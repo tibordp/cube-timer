@@ -72,26 +72,27 @@ function getHistoryData(history: Record<number, number>): HistoryData {
   };
 }
 
+export function useHistory(
+  timerState: TimerState
+): [HistoryData, React.Dispatch<HistoryAction>] {
+  const [history, dispatch] = React.useReducer(reducer, {});
+  React.useEffect(() => {
+    dispatch({ action: "push", timerState });
+  }, [timerState]);
 
-export function useHistory(timerState: TimerState): [HistoryData, React.Dispatch<HistoryAction>] {
-    const [history, dispatch] = React.useReducer(reducer, {});
-    React.useEffect(() => {
-      dispatch({ action: "push", timerState });
-    }, [timerState]);
-  
-    const historyData = React.useMemo(
-      () => getHistoryData(history),
-      [history]
-    );
+  const historyData = React.useMemo(() => getHistoryData(history), [history]);
 
-    React.useEffect(() => {
-        dispatch({action: "initialize", initialData: JSON.parse(window.localStorage.getItem("history") || "{}") });
-    }, []);
+  React.useEffect(() => {
+    dispatch({
+      action: "initialize",
+      initialData: JSON.parse(window.localStorage.getItem("history") || "{}"),
+    });
+  }, []);
 
-    React.useEffect(() => {
-        console.log(history);
-        window.localStorage.setItem("history", JSON.stringify(history));
-    }, [history]);
-    
-    return [historyData, dispatch];
+  React.useEffect(() => {
+    console.log(history);
+    window.localStorage.setItem("history", JSON.stringify(history));
+  }, [history]);
+
+  return [historyData, dispatch];
 }
