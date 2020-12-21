@@ -1,4 +1,4 @@
-name: Cube Timer CI
+name: Build
 
 on:
   pull_request:
@@ -38,16 +38,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.1
-
       - name: Install dependencies
         run: |
           yarn --silent
-          docker pull emscripten/emsdk
-      - name: Test and Lint
-        run: |
-          yarn lint
-          yarn wasm:production
-          yarn test:ci
       - name: Production build
         run: |
           yarn build
