@@ -6,6 +6,9 @@ on:
 
 jobs:
   build-and-deploy:
+    defaults:
+      run:
+        working-directory: demo-app  
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
