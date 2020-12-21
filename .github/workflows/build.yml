@@ -33,7 +33,7 @@ jobs:
   build-demoapp:
     defaults:
       run:
-        working-directory: scripts
+        working-directory: demo-app
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
