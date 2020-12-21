@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build-fimware:
+  build-firmware:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
           pip install --upgrade platformio
       - name: Run PlatformIO
         run: pio run
-  build-demoapp:
+  build-demo-app:
     defaults:
       run:
         working-directory: demo-app
